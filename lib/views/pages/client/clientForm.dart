@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class ClientForm extends StatefulWidget {
   ClientModel client;
-  int idx;
+  final int idx;
   bool hasClient = false;
 
   ClientForm({this.client, this.idx}) {
@@ -24,10 +24,12 @@ class _ClientFormState extends State<ClientForm> {
   String _name = "";
   String _endereco = "";
   int _number = 0;
+  int refreshIdx = 0;
 
   @override
   Widget build(BuildContext context) {
-    if (widget.hasClient) {
+    refreshIdx += 1;
+    if (widget.hasClient && refreshIdx <= 1) {
       _aniversario = widget.client.aniversario;
       _name = widget.client.name;
       _endereco = widget.client.endereco;
@@ -76,19 +78,33 @@ class _ClientFormState extends State<ClientForm> {
                   ),
                   Card(
                     child: ListTile(
-                      onTap: () => showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1950),
-                              lastDate: DateTime.now().add(Duration(days: 50)))
-                          .then((value) {
-                        setState(() {
-                          _aniversario = value;
-                        });
-                      }),
-                      leading: Icon(
-                        Icons.calendar_today,
-                        color: Colors.blue,
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.delete_forever,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _aniversario = null;
+                          });
+                        },
+                      ),
+                      leading: IconButton(
+                        icon: Icon(
+                          Icons.calendar_today,
+                          color: Colors.blue,
+                        ),
+                        onPressed: () => showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1950),
+                                lastDate:
+                                    DateTime.now().add(Duration(days: 50)))
+                            .then((value) {
+                          setState(() {
+                            _aniversario = value;
+                          });
+                        }),
                       ),
                       title: Text('Aniversário' +
                           (_aniversario == null
@@ -105,7 +121,7 @@ class _ClientFormState extends State<ClientForm> {
         onPressed: () {
           _formKey.currentState.save();
           ClientModel client = ClientModel(
-              id: widget.client.id,
+              id: widget.hasClient ? widget.client.id : "",
               name: _name,
               endereco: _endereco,
               aniversario: _aniversario,

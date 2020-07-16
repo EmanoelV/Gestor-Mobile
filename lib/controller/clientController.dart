@@ -33,7 +33,9 @@ class ClientControler {
         clientList.add(ClientModel(
             name: value['name'],
             endereco: value['endereco'],
-            aniversario: DateTime.parse(value['aniversario']),
+            aniversario: value['aniversario'] != null
+                ? DateTime.parse(value['aniversario'])
+                : null,
             numero: value['numero'],
             id: key,
             date: DateTime.parse(value['date'])));

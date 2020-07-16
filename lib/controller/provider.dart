@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:Fick/controller/clientController.dart';
 import 'package:Fick/controller/itemController.dart';
-import 'package:Fick/data.dart';
 import 'package:Fick/model/clientModel.dart';
 import 'package:Fick/model/itemModel.dart';
 import 'package:flutter/material.dart';
@@ -10,15 +9,12 @@ import 'package:flutter/material.dart';
 class MyProvider with ChangeNotifier {
   List<ItemModel> _items = [];
   List<ClientModel> _clients = [];
-  bool _itemSending = false;
-  bool _itemLoading = true;
-  bool _clientLoading = true;
+  bool itemSending = false;
+  bool itemLoading = true;
+  bool clientLoading = true;
 
   List<ItemModel> get items => [..._items];
   List<ClientModel> get clients => [..._clients];
-  bool get itemSending => [_itemSending][0];
-  bool get itemLoading => [_itemLoading][0];
-  bool get clientLoading => [_clientLoading][0];
 
   MyProvider() {
     itemLoad();
@@ -48,13 +44,13 @@ class MyProvider with ChangeNotifier {
   }
 
   Future clientLoad() async {
-    _clientLoading = false;
+    clientLoading = false;
     List<ClientModel> clients = await ClientControler().readAll();
     _clients.clear();
     clients.isNotEmpty
         ? _clients.addAll(clients)
         : print('Nenhum cliente encontrado');
-    _clientLoading = true;
+    clientLoading = true;
     notifyListeners();
     return;
   }
@@ -62,7 +58,7 @@ class MyProvider with ChangeNotifier {
 
   // ITEM ACTIONS
   void itemAdd(ItemModel item, {File img}) async {
-    _itemSending = true;
+    itemSending = true;
     _items.add(item);
     notifyListeners();
     img == null
@@ -71,53 +67,53 @@ class MyProvider with ChangeNotifier {
     item.id = await ItemController().create(item);
     _items.remove(item);
     _items.add(item);
-    _itemSending = false;
+    itemSending = false;
     notifyListeners();
   }
 
   void itemEdit(ItemModel item, int idx, {File img}) async {
-    _itemSending = true;
+    itemSending = true;
     if (img != null) {
       _items[idx] = item;
       notifyListeners();
       item.img = await ItemController().sendImg(img, oldImg: item.img);
       ItemController().update(item);
       _items[idx] = item;
-      _itemSending = false;
+      itemSending = false;
       notifyListeners();
     } else {
       ItemController().update(item);
       _items[idx] = item;
-      _itemSending = false;
+      itemSending = false;
       notifyListeners();
     }
   }
 
   void itemIncrementEstoque(int idx, int newValue) async {
-    _itemSending = true;
+    itemSending = true;
     ItemController().increment(_items[idx].id, newValue);
     _items[idx].estoque = newValue;
-    _itemSending = false;
+    itemSending = false;
     notifyListeners();
   }
 
   void itemRemove(int idx) async {
-    _itemSending = true;
+    itemSending = true;
     if (_items[idx].img != null) ItemController().removeImg(_items[idx].img);
     ItemController().remove(_items[idx].id);
     _items.remove(_items[idx]);
-    _itemSending = false;
+    itemSending = false;
     notifyListeners();
   }
 
   Future itemLoad() async {
-    _itemLoading = false;
+    itemLoading = false;
     List<ItemModel> products = await ItemController().readAll();
     _items.clear();
     products.isNotEmpty
         ? _items.addAll(products)
         : print('Nenhum produto encontrado');
-    _itemLoading = true;
+    itemLoading = true;
     notifyListeners();
     return;
   }
