@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "332035850267",
+    "firebase_url": "https://projetodetestes-2357.firebaseio.com",
+    "project_id": "projetodetestes-2357",
+    "storage_bucket": "projetodetestes-2357.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332035850267:android:cd238145db5d6597a3f8be",
+        "android_client_info": {
+          "package_name": "com.example.Fick"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332035850267-h418khmfpjmo8kme7eiboa3fbk3h1mq2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzj9mS41CsqtOp5c8CfEuOZXAWkbot3eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332035850267-h418khmfpjmo8kme7eiboa3fbk3h1mq2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
