@@ -1,23 +1,25 @@
-import '../../../data.dart';
+import 'package:Fick/controller/provider.dart';
+import 'package:Fick/model/transactionModel.dart';
+import 'package:Fick/views/pages/finances/financesForm.dart';
+import 'package:provider/provider.dart';
 import 'package:Fick/views/components/popup.dart';
 import 'package:Fick/views/components/myDrawer.dart';
 import 'financesView.dart';
 import 'package:flutter/material.dart';
 
 class FinancesPage extends StatelessWidget {
-  final List transactionList = Data().transactionList;
-
+  List transactionList = [];
   @override
   Widget build(BuildContext context) {
+    transactionList = Provider.of<MyProvider>(context).transactions;
     return Scaffold(
         drawer: MyDrawer(),
         appBar: AppBar(
-          backgroundColor: Colors.red,
-          title: Text('Finanças[EM DESENVOLVIMENTO]'),
+          title: Text('Finanças'),
         ),
         body: ListView.builder(
           itemBuilder: (_, index) {
-            return FinancesView(transactionList[index]);
+            return FinancesView(transactionList[index], index);
           },
           itemCount: transactionList.length,
         ),
@@ -25,54 +27,42 @@ class FinancesPage extends StatelessWidget {
           onPressed: () {},
           child: Popup(
             actions: (String value) {
-              print(value);
-              showModalBottomSheet(
-                context: context,
-                builder: (_) => Scaffold(
-                  body: SingleChildScrollView(
-                    child: Form(
-                      child: Column(
-                        children: <Widget>[
-                          TextFormField(
-                            decoration: InputDecoration(
-                              labelText: 'Cliente',
-                              icon: Icon(Icons.person),
-                            ),
-                          ),
-                          Row(children: <Widget>[
-                            Flexible(
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Produtos',
-                                  icon: Icon(Icons.shopping_cart),
-                                ),
-                              ),
-                            ),
-                            Flexible(
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Valor',
-                                ),
-                              ),
-                            ),
-                          ]),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
+              Map<String, FinancesFormConfig> actions = {
+                'venda': FinancesFormConfig('Registrar Venda', false, true),
+                'receita': FinancesFormConfig('Registrar Receita', false),
+                'despesa': FinancesFormConfig('Registrar Despesa', true),
+              };
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                //Provider.of<MyProvider>(context).itemForSell.clear();
+                return FinancesForm(actions[value]);
+              }));
             },
             icon: Icon(Icons.attach_money),
             menuItens: [
               MenuItemModel(
-                title: 'Receita',
-                value: 'r',
+                title: 'Venda',
+                value: 'venda',
                 icon: Icon(
                   Icons.attach_money,
                   color: Colors.green,
                 ),
-              )
+              ),
+              MenuItemModel(
+                title: 'Receita',
+                value: 'receita',
+                icon: Icon(
+                  Icons.attach_money,
+                  color: Colors.green,
+                ),
+              ),
+              MenuItemModel(
+                title: 'Despesa',
+                value: 'despesa',
+                icon: Icon(
+                  Icons.attach_money,
+                  color: Colors.red,
+                ),
+              ),
             ],
           ),
         ));

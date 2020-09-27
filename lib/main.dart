@@ -1,5 +1,5 @@
 import 'package:Fick/controller/provider.dart';
-import 'package:Fick/views/pages/client/client.dart';
+import 'package:Fick/views/pages/finances/finances.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: ClientPage(),
+        home: FinancesPage(),
       ),
     );
   }

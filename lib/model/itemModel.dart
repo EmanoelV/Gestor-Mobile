@@ -8,6 +8,7 @@ class ItemModel {
   double newValue;
   DateTime date;
   String img;
+  int quantidadeVendida;
 
   ItemModel(
       {@required this.id,
@@ -16,5 +17,6 @@ class ItemModel {
       @required this.value,
       @required this.newValue,
       @required this.date,
-      this.img});
+      this.img,
+      this.quantidadeVendida});
 }

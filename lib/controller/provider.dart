@@ -1,25 +1,102 @@
 import 'dart:io';
-
 import 'package:Fick/controller/clientController.dart';
 import 'package:Fick/controller/itemController.dart';
 import 'package:Fick/model/clientModel.dart';
 import 'package:Fick/model/itemModel.dart';
+import 'package:Fick/model/transactionModel.dart';
 import 'package:flutter/material.dart';
 
 class MyProvider with ChangeNotifier {
   List<ItemModel> _items = [];
+  List<ItemModel> itemForSell = [];
   List<ClientModel> _clients = [];
+  List<TransactionModel> _transactions = [];
   bool itemSending = false;
   bool itemLoading = true;
   bool clientLoading = true;
+  DateTime dateTransaction;
+
+  set setDateTransaction(newDate) {
+    dateTransaction = newDate;
+  }
 
   List<ItemModel> get items => [..._items];
   List<ClientModel> get clients => [..._clients];
+  List<TransactionModel> get transactions => [..._transactions];
 
   MyProvider() {
     itemLoad();
     clientLoad();
   }
+
+  // TRANSACTIONS ACTIONS
+  List<TransactionModel> _organizeParcelas(TransactionModel transaction) {
+    List<TransactionModel> transactions = [];
+    int interval = transaction.interval;
+    String title = transaction.title;
+    TransactionModel tempTransaction;
+
+    DateTime newDate(DateTime date, int interval, int parcela) {
+      int year = date.year;
+      int month = date.month;
+      int day = date.day;
+      print(interval);
+      if (interval == 30) {
+        return month == 12
+            ? DateTime.parse('${year + 1}-01-$day')
+            : DateTime.parse(
+                '$year-${(month + parcela - 1) >= 10 ? '' : '0'}${month + parcela - 1}-${day > 9 ? "" : "0"}$day');
+      } else if (interval == 365) {
+        return DateTime.parse(
+            '${year + parcela - 1}-${month > 9 ? "" : "0"}$month-${day > 9 ? "" : "0"}$day');
+      } else {
+        return date.add(Duration(days: interval * parcela));
+      }
+    }
+
+    for (var i = 1; i <= transaction.parcelas; i++) {
+      tempTransaction = new TransactionModel.clone(transaction);
+      tempTransaction.title = '$title x$i';
+      tempTransaction.date = newDate(transaction.date, interval, i);
+      tempTransaction.isPaid = i > 1 ? false : tempTransaction.isPaid;
+      transactions.add(tempTransaction);
+    }
+    return transactions;
+  }
+
+  void transactionAdd(TransactionModel transaction) {
+    if (transaction.interval == 0) {
+      transaction.copyProducts.forEach((element) {
+        for (int i = 0; i < _items.length; i++) {
+          if (_items[i].id == element.id) {
+            _items[i].estoque -= element.estoque;
+            break;
+          }
+        }
+      });
+      _transactions.add(transaction);
+    } else {
+      _transactions.addAll(_organizeParcelas(transaction));
+    }
+
+    notifyListeners();
+  }
+
+  void addItemForSell(item) {
+    itemForSell.add(item);
+    notifyListeners();
+  }
+
+  void transactionEdit() {}
+
+  void transactionRemove(int idx) {
+    _transactions.remove(_transactions[idx]);
+    notifyListeners();
+  }
+
+  void transactionRead() {}
+
+  // END TRANSACTIONS ACTIONS
 
   // CLIENT ACTIONS
   void cientAdd(ClientModel client) async {
