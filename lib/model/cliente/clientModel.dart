@@ -1,12 +1,11 @@
 import 'dart:convert';
-
-import 'package:Fick/model/clientModel.dart';
+import 'package:Fick/model/cliente/clientModelData.dart';
 import 'package:http/http.dart';
 
-class ClientControler {
+class ClientModel {
   final _urlBase = 'https://projetodetestes-2357.firebaseio.com/clients';
 
-  add(ClientModel client) async {
+  add(ClientModelData client) async {
     String id;
     print('Enviando cliente...');
     final resp = await post(_urlBase + '.json',
@@ -27,10 +26,10 @@ class ClientControler {
   readAll() async {
     try {
       print('Carregando clientes...');
-      List<ClientModel> clientList = [];
+      List<ClientModelData> clientList = [];
       final resp = await get(_urlBase + '.json');
       await json.decode(resp.body).forEach((key, value) {
-        clientList.add(ClientModel(
+        clientList.add(ClientModelData(
             name: value['name'],
             endereco: value['endereco'],
             aniversario: value['aniversario'] != null
@@ -60,7 +59,7 @@ class ClientControler {
     }
   }
 
-  update(ClientModel client) async {
+  update(ClientModelData client) async {
     try {
       print('Enviando atualização...');
       await patch(_urlBase + '/' + client.id + '.json',

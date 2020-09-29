@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class ItemModel {
+class ItemModelData {
   String id;
   String title;
   int estoque;
@@ -10,7 +10,7 @@ class ItemModel {
   String img;
   int quantidadeVendida;
 
-  ItemModel(
+  ItemModelData(
       {@required this.id,
       @required this.title,
       @required this.estoque,

@@ -1,11 +1,11 @@
 import 'package:Fick/controller/provider.dart';
-import 'package:Fick/model/itemModel.dart';
+import 'package:Fick/model/item/itemModelData.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SelectItems extends StatelessWidget {
-  List<ItemModel> _itemList;
-  List<ItemModel> _itemSelected;
+  List<ItemModelData> _itemList;
+  List<ItemModelData> _itemSelected;
 
   @override
   Widget build(BuildContext context) {

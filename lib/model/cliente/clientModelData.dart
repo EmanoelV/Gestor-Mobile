@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
-
-class ClientModel {
+class ClientModelData {
   String id;
   String name;
   String endereco;
@@ -8,7 +6,7 @@ class ClientModel {
   DateTime aniversario;
   DateTime date;
 
-  ClientModel(
+  ClientModelData(
       {this.name,
       this.endereco,
       this.date,

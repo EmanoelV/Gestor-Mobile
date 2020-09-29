@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => MyProvider(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Fick',
         localizationsDelegates: [GlobalMaterialLocalizations.delegate],
         supportedLocales: [

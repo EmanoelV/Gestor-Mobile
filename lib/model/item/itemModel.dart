@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:Fick/model/itemModel.dart';
+import 'package:Fick/model/item/itemModelData.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart';
 import 'package:uuid/uuid.dart';
 
-class ItemController {
+class ItemModel {
   final _urlBase = 'https://projetodetestes-2357.firebaseio.com/products';
 
   removeImg(String imgLink) async {
@@ -31,7 +31,7 @@ class ItemController {
     return urlImg;
   }
 
-  create(ItemModel product) async {
+  create(ItemModelData product) async {
     String id;
     try {
       print('Enviando produto...');
@@ -55,7 +55,7 @@ class ItemController {
     }
   }
 
-  update(ItemModel product) async {
+  update(ItemModelData product) async {
     try {
       print('Enviando atualização...');
 
@@ -98,10 +98,10 @@ class ItemController {
   readAll() async {
     try {
       print('Carregando produtos...');
-      List<ItemModel> productList = [];
+      List<ItemModelData> productList = [];
       final resp = await get(_urlBase + '.json');
       await json.decode(resp.body).forEach((key, value) {
-        productList.add(ItemModel(
+        productList.add(ItemModelData(
             title: value['title'],
             id: key,
             value: value['value'],

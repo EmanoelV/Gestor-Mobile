@@ -1,8 +1,8 @@
-import 'package:Fick/model/itemModel.dart';
+import 'package:Fick/model/item/itemModelData.dart';
 import 'package:flutter/material.dart';
 
 class ItemDetail extends StatelessWidget {
-  ItemModel _item;
+  ItemModelData _item;
   ItemDetail(this._item);
 
   @override

@@ -1,16 +1,16 @@
 import 'dart:io';
-import 'package:Fick/controller/clientController.dart';
-import 'package:Fick/controller/itemController.dart';
-import 'package:Fick/model/clientModel.dart';
-import 'package:Fick/model/itemModel.dart';
-import 'package:Fick/model/transactionModel.dart';
+import 'package:Fick/model/item/itemModel.dart';
+import 'package:Fick/model/cliente/clientModel.dart';
+import 'package:Fick/model/cliente/clientModelData.dart';
+import 'package:Fick/model/item/itemModelData.dart';
+import 'package:Fick/model/transaction/transactionModelData.dart';
 import 'package:flutter/material.dart';
 
 class MyProvider with ChangeNotifier {
-  List<ItemModel> _items = [];
-  List<ItemModel> itemForSell = [];
-  List<ClientModel> _clients = [];
-  List<TransactionModel> _transactions = [];
+  List<ItemModelData> _items = [];
+  List<ItemModelData> itemForSell = [];
+  List<ClientModelData> _clients = [];
+  List<TransactionModelData> _transactions = [];
   bool itemSending = false;
   bool itemLoading = true;
   bool clientLoading = true;
@@ -20,9 +20,9 @@ class MyProvider with ChangeNotifier {
     dateTransaction = newDate;
   }
 
-  List<ItemModel> get items => [..._items];
-  List<ClientModel> get clients => [..._clients];
-  List<TransactionModel> get transactions => [..._transactions];
+  List<ItemModelData> get items => [..._items];
+  List<ClientModelData> get clients => [..._clients];
+  List<TransactionModelData> get transactions => [..._transactions];
 
   MyProvider() {
     itemLoad();
@@ -30,11 +30,12 @@ class MyProvider with ChangeNotifier {
   }
 
   // TRANSACTIONS ACTIONS
-  List<TransactionModel> _organizeParcelas(TransactionModel transaction) {
-    List<TransactionModel> transactions = [];
+  List<TransactionModelData> _organizeParcelas(
+      TransactionModelData transaction) {
+    List<TransactionModelData> transactions = [];
     int interval = transaction.interval;
     String title = transaction.title;
-    TransactionModel tempTransaction;
+    TransactionModelData tempTransaction;
 
     DateTime newDate(DateTime date, int interval, int parcela) {
       int year = date.year;
@@ -55,7 +56,7 @@ class MyProvider with ChangeNotifier {
     }
 
     for (var i = 1; i <= transaction.parcelas; i++) {
-      tempTransaction = new TransactionModel.clone(transaction);
+      tempTransaction = new TransactionModelData.clone(transaction);
       tempTransaction.title = '$title x$i';
       tempTransaction.date = newDate(transaction.date, interval, i);
       tempTransaction.isPaid = i > 1 ? false : tempTransaction.isPaid;
@@ -64,7 +65,7 @@ class MyProvider with ChangeNotifier {
     return transactions;
   }
 
-  void transactionAdd(TransactionModel transaction) {
+  void transactionAdd(TransactionModelData transaction) {
     if (transaction.interval == 0) {
       transaction.copyProducts.forEach((element) {
         for (int i = 0; i < _items.length; i++) {
@@ -99,30 +100,30 @@ class MyProvider with ChangeNotifier {
   // END TRANSACTIONS ACTIONS
 
   // CLIENT ACTIONS
-  void cientAdd(ClientModel client) async {
+  void cientAdd(ClientModelData client) async {
     _clients.add(client);
     notifyListeners();
-    client.id = await ClientControler().add(client);
+    client.id = await ClientModel().add(client);
     _clients.remove(client);
     _clients.add(client);
     notifyListeners();
   }
 
-  void clientEdit(ClientModel client, int idx) async {
-    ClientControler().update(client);
+  void clientEdit(ClientModelData client, int idx) async {
+    ClientModel().update(client);
     _clients[idx] = client;
     notifyListeners();
   }
 
   void clientRemove(int idx) {
-    ClientControler().remove(_clients[idx].id);
+    ClientModel().remove(_clients[idx].id);
     _clients.remove(_clients[idx]);
     notifyListeners();
   }
 
   Future clientLoad() async {
     clientLoading = false;
-    List<ClientModel> clients = await ClientControler().readAll();
+    List<ClientModelData> clients = await ClientModel().readAll();
     _clients.clear();
     clients.isNotEmpty
         ? _clients.addAll(clients)
@@ -134,32 +135,30 @@ class MyProvider with ChangeNotifier {
   // END CLIENT ACTIONS
 
   // ITEM ACTIONS
-  void itemAdd(ItemModel item, {File img}) async {
+  void itemAdd(ItemModelData item, {File img}) async {
     itemSending = true;
     _items.add(item);
     notifyListeners();
-    img == null
-        ? item.img = null
-        : item.img = await ItemController().sendImg(img);
-    item.id = await ItemController().create(item);
+    img == null ? item.img = null : item.img = await ItemModel().sendImg(img);
+    item.id = await ItemModel().create(item);
     _items.remove(item);
     _items.add(item);
     itemSending = false;
     notifyListeners();
   }
 
-  void itemEdit(ItemModel item, int idx, {File img}) async {
+  void itemEdit(ItemModelData item, int idx, {File img}) async {
     itemSending = true;
     if (img != null) {
       _items[idx] = item;
       notifyListeners();
-      item.img = await ItemController().sendImg(img, oldImg: item.img);
-      ItemController().update(item);
+      item.img = await ItemModel().sendImg(img, oldImg: item.img);
+      ItemModel().update(item);
       _items[idx] = item;
       itemSending = false;
       notifyListeners();
     } else {
-      ItemController().update(item);
+      ItemModel().update(item);
       _items[idx] = item;
       itemSending = false;
       notifyListeners();
@@ -168,7 +167,7 @@ class MyProvider with ChangeNotifier {
 
   void itemIncrementEstoque(int idx, int newValue) async {
     itemSending = true;
-    ItemController().increment(_items[idx].id, newValue);
+    ItemModel().increment(_items[idx].id, newValue);
     _items[idx].estoque = newValue;
     itemSending = false;
     notifyListeners();
@@ -176,8 +175,8 @@ class MyProvider with ChangeNotifier {
 
   void itemRemove(int idx) async {
     itemSending = true;
-    if (_items[idx].img != null) ItemController().removeImg(_items[idx].img);
-    ItemController().remove(_items[idx].id);
+    if (_items[idx].img != null) ItemModel().removeImg(_items[idx].img);
+    ItemModel().remove(_items[idx].id);
     _items.remove(_items[idx]);
     itemSending = false;
     notifyListeners();
@@ -185,7 +184,7 @@ class MyProvider with ChangeNotifier {
 
   Future itemLoad() async {
     itemLoading = false;
-    List<ItemModel> products = await ItemController().readAll();
+    List<ItemModelData> products = await ItemModel().readAll();
     _items.clear();
     products.isNotEmpty
         ? _items.addAll(products)

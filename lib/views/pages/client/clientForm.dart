@@ -1,12 +1,13 @@
 import 'package:Fick/controller/provider.dart';
-import 'package:Fick/model/clientModel.dart';
+import 'package:Fick/model/cliente/clientModel.dart';
+import 'package:Fick/model/cliente/clientModelData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ClientForm extends StatefulWidget {
-  ClientModel client;
+  ClientModelData client;
   final int idx;
   bool hasClient = false;
 
@@ -120,7 +121,7 @@ class _ClientFormState extends State<ClientForm> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _formKey.currentState.save();
-          ClientModel client = ClientModel(
+          ClientModelData client = ClientModelData(
               id: widget.hasClient ? widget.client.id : "",
               name: _name,
               endereco: _endereco,

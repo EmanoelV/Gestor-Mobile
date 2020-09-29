@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:Fick/model/itemModel.dart';
+import 'package:Fick/model/item/itemModelData.dart';
 import 'package:Fick/controller/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -143,7 +143,7 @@ class _ItemFormState extends State<ItemForm> {
                         ),
                         onPressed: () {
                           _formKey.currentState.save();
-                          ItemModel prod = ItemModel(
+                          ItemModelData prod = ItemModelData(
                               id: widget.id,
                               title: _title,
                               estoque: _estoque,

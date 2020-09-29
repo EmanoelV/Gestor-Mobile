@@ -1,7 +1,7 @@
-import 'package:Fick/model/clientModel.dart';
-import 'package:Fick/model/itemModel.dart';
+import 'package:Fick/model/cliente/clientModel.dart';
+import 'package:Fick/model/item/itemModelData.dart';
 
-class TransactionModel {
+class TransactionModelData {
   DateTime date = DateTime.now();
   int parcelas;
   int interval;
@@ -11,9 +11,9 @@ class TransactionModel {
   String title;
   double total;
   ClientModel copyClient;
-  List<ItemModel> copyProducts;
+  List<ItemModelData> copyProducts;
 
-  TransactionModel(
+  TransactionModelData(
       {this.id,
       this.isPaid,
       this.total,
@@ -25,7 +25,7 @@ class TransactionModel {
       this.interval,
       this.parcelas});
 
-  TransactionModel.clone(TransactionModel transaction) {
+  TransactionModelData.clone(TransactionModelData transaction) {
     this.id = transaction.id;
     this.isPaid = transaction.isPaid;
     this.total = transaction.total;

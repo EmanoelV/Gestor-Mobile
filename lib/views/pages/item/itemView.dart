@@ -1,4 +1,4 @@
-import 'package:Fick/model/itemModel.dart';
+import 'package:Fick/model/item/itemModelData.dart';
 import 'package:Fick/views/pages/item/itemDetail.dart';
 import 'package:Fick/controller/provider.dart';
 import 'package:flutter/material.dart';
@@ -7,14 +7,14 @@ import 'package:provider/provider.dart';
 import 'itemForm.dart';
 
 class ItemView extends StatelessWidget {
-  ItemModel _item;
+  ItemModelData _item;
   int _idx;
 
   ItemView(this._item, this._idx);
 
   @override
   Widget build(BuildContext context) {
-    void edit(ItemModel item, int idx) {
+    void edit(ItemModelData item, int idx) {
       showModalBottomSheet(
         context: context,
         builder: (_) => ItemForm(

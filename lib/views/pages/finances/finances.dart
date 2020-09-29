@@ -1,5 +1,5 @@
 import 'package:Fick/controller/provider.dart';
-import 'package:Fick/model/transactionModel.dart';
+import 'package:Fick/model/transaction/transactionModelData.dart';
 import 'package:Fick/views/pages/finances/financesForm.dart';
 import 'package:provider/provider.dart';
 import 'package:Fick/views/components/popup.dart';

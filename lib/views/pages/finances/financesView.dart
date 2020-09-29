@@ -1,11 +1,11 @@
 import 'package:Fick/controller/provider.dart';
-import 'package:Fick/model/transactionModel.dart';
+import 'package:Fick/model/transaction/transactionModelData.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class FinancesView extends StatelessWidget {
-  final TransactionModel _transaction;
+  final TransactionModelData _transaction;
   final int idx;
   String _totalValue;
   String _date;

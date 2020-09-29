@@ -1,19 +1,19 @@
 import 'package:Fick/controller/provider.dart';
-import 'package:Fick/model/clientModel.dart';
+import 'package:Fick/model/cliente/clientModelData.dart';
 import 'package:Fick/views/pages/client/clientForm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ClientView extends StatelessWidget {
-  ClientModel _client;
+  ClientModelData _client;
   int idx;
 
   ClientView(this._client, this.idx);
 
   @override
   Widget build(BuildContext context) {
-    void edit(ClientModel client, int idx) {
+    void edit(ClientModelData client, int idx) {
       showModalBottomSheet(
           context: context,
           builder: (_) => ClientForm(

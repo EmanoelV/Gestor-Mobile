@@ -1,4 +1,4 @@
-import 'package:Fick/controller/itemController.dart';
+import 'package:Fick/model/item/itemModel.dart';
 import 'package:Fick/views/pages/item/itemForm.dart';
 
 import 'package:Fick/views/components/myDrawer.dart';
@@ -6,7 +6,7 @@ import 'package:Fick/controller/provider.dart';
 import 'package:provider/provider.dart';
 import '../../components/popup.dart';
 import 'package:flutter/material.dart';
-import '../../../model/itemModel.dart';
+import '../../../model/item/itemModelData.dart';
 import 'itemView.dart';
 
 class ItemPage extends StatefulWidget {
@@ -15,7 +15,7 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
-  List<ItemModel> _itemList;
+  List<ItemModelData> _itemList;
 
   @override
   Widget build(BuildContext context) {

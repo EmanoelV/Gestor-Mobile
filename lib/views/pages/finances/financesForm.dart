@@ -1,6 +1,6 @@
 import 'package:Fick/controller/provider.dart';
-import 'package:Fick/model/itemModel.dart';
-import 'package:Fick/model/transactionModel.dart';
+import 'package:Fick/model/item/itemModelData.dart';
+import 'package:Fick/model/transaction/transactionModelData.dart';
 import 'package:Fick/views/pages/finances/formDate.dart';
 import 'package:Fick/views/pages/finances/formParcelar.dart';
 import 'package:Fick/views/pages/finances/selectItems.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FinancesFormConfig {
-  TransactionModel transaction;
+  TransactionModelData transaction;
   String title;
   bool isNegative;
   bool isVenda;
@@ -36,7 +36,7 @@ class _FinancesFormState extends State<FinancesForm> {
   String desc;
   DateTime date;
   bool resetedValues;
-  List<ItemModel> listItems = [];
+  List<ItemModelData> listItems = [];
   final keyForm = GlobalKey<FormState>();
 
   @override
@@ -237,7 +237,7 @@ class _FinancesFormState extends State<FinancesForm> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           keyForm.currentState.save();
-          final trans = TransactionModel(
+          final trans = TransactionModelData(
               id: 'await id',
               isPaid: isPaid,
               total: !widget.config.isVenda ? total : total / parcelas,
